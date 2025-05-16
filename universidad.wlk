@@ -124,11 +124,3 @@ class Estudiante {
     }
 
 
-/* 
-class Aprobacion {
-    var property materia
-    var property nota 
-
-   
-} */
-
