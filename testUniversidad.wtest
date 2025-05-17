@@ -1,5 +1,8 @@
 import universidad.*
 
+//entiendo que debe haber una forma mas simple de hacer el testeo, sin repetir tanto codigo dentro de cada test. 
+//mi problema surgia al tener que agregar x elementos en los sets.
+
 describe "tests del tp" {
 
     const objetos1 = new Materia(cupo=5)
