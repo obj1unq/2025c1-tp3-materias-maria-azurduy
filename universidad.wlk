@@ -1,13 +1,18 @@
+class Aprobacion {
+    const property materia 
+    const property nota 
+}
+
 
 class Carrera {
-    const property materias = {}
+    var property materias = {}
 }
 
 class Materia {
     var property estudiantesAnotados = {} 
     var property estudiantesEnListaDeEspera = []
-    const property requisitos = {}
-    const property cupo 
+    var property requisitos = {}
+    var property cupo 
 
    method inscribirEstudiante(estudiante) {
         self.validarInscribir(estudiante)
@@ -52,17 +57,14 @@ class Materia {
 
 
 class Estudiante {
-    var property materiasAprobadas = new Dictionary() //no se me ocurre otra forma que no sea con un map. Intente hacer una class Aprobacion, como se ve en
-                                                      //la linea , pero al intentar añadir una materia aprobada al set, fallaba
+    var property materiasAprobadas = {}                                                      
     var property carrerasCursando = {} 
     var property materiasInscriptas= {}
     var property materiasEnEspera= {}
 
-    method estudiarNuevaCarrera(carrera) = carrerasCursando.add(carrera)
-
     method registroMateriaAprobada(materia, nota){
         self.validarAprobacion(materia) //punto 3
-        materiasAprobadas.put(materia, nota)
+        materiasAprobadas.add(new Aprobacion (materia = materia, nota = nota))
     }
 
     method validarAprobacion(materia) {
@@ -76,11 +78,11 @@ class Estudiante {
     }
 
     method promedio() { 
-        return materiasAprobadas.values().sum() / materiasAprobadas.size()
+        return materiasAprobadas.map({aprobacion => aprobacion.nota()}).sum() / materiasAprobadas.size()
     }
 
     method tieneAprobada (materia){                        
-        return materiasAprobadas.containsKey(materia)
+        return materiasAprobadas.contains(materia)
     }
 
     method materiasDeTodasLasCarreras() {
@@ -119,8 +121,8 @@ class Estudiante {
         if (not self.carrerasCursando().contains(carrera)) { self.error ("No estas inscripto en esta carrera")}
     }
 
-
-
     }
+
+
 
 

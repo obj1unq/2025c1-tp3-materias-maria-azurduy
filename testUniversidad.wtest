@@ -1,0 +1,60 @@
+import universidad.*
+
+describe "tests del tp" {
+
+    const objetos1 = new Materia(cupo=5)
+    const mate1 = new Materia(cupo=30)
+    const objetos2 = new Materia(cupo=3, requisitos= mate1 + objetos1) //esta bien añadir los requisitos asi? 
+    const base = new Materia(cupo=8)
+    const objetos3 = new Materia(cupo=6, requisitos= base + objetos2)
+    const programacionConcurrente = new Materia(cupo=5, requisitos= base + objetos1)
+    const epi = new Materia(cupo=55)
+    
+    const biologia1 = new Materia(cupo=55)
+    const biologia2 = new Materia(cupo=40, requisitos= biologia1)
+    const quimica = new Materia(cupo=27)
+
+    const programacion = new Carrera()
+    const medicina = new Carrera()
+
+
+    const roque = new Estudiante(carrerasCursando = programacion + medicina)
+    const luisa = new Estudiante(carrerasCursando = programacion)
+    const romina = new Estudiante(carrerasCursando = programacion)
+    const alicia = new Estudiante(carrerasCursando = programacion)
+    const ana = new Estudiante(carrerasCursando = programacion)
+
+    test "Roque puede inscribirse en Objetos 2" {
+      roque.registroMateriaAprobada(mate1, 9)
+      roque.registroMateriaAprobada(objetos1, 9)
+      assert.that(roque.puedeInscribirseA(objetos2))
+    }
+
+    test "Roque no puede inscribirse en Objetos 3" {
+        roque.registroMateriaAprobada(base, 8)
+        assert.notThat(roque.puedeInscribirseA(objetos3))
+    }
+
+    test "Roque no puede inscribirse en Objetos 1" {
+        roque.registroMateriaAprobada(mate1, 9)
+        assert.notThat(roque.puedeInscribirseA(objetos1))
+    }
+
+    //test 2
+
+    test "Roque puede inscribirse en programacionConcurrente" {
+      assert.that(roque.puedeInscribirseA(programacionConcurrente))
+    }
+
+    test "Roque puede inscribirse en Biologia 2" {
+      assert.that(roque.puedeInscribirseA(biologia2))
+    }
+
+    //test 3
+
+
+
+
+
+}
+
