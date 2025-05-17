@@ -4,53 +4,194 @@ describe "tests del tp" {
 
     const objetos1 = new Materia(cupo=5)
     const mate1 = new Materia(cupo=30)
-    const objetos2 = new Materia(cupo=3, requisitos= mate1 + objetos1) //esta bien añadir los requisitos asi? 
+    const objetos2 = new Materia(cupo=3) 
     const base = new Materia(cupo=8)
-    const objetos3 = new Materia(cupo=6, requisitos= base + objetos2)
-    const programacionConcurrente = new Materia(cupo=5, requisitos= base + objetos1)
+    const objetos3 = new Materia(cupo=6)
+    const programacionConcurrente = new Materia(cupo=5)
     const epi = new Materia(cupo=55)
     
     const biologia1 = new Materia(cupo=55)
-    const biologia2 = new Materia(cupo=40, requisitos= biologia1)
+    const biologia2 = new Materia(cupo=40)
     const quimica = new Materia(cupo=27)
 
     const programacion = new Carrera()
     const medicina = new Carrera()
 
 
-    const roque = new Estudiante(carrerasCursando = programacion + medicina)
-    const luisa = new Estudiante(carrerasCursando = programacion)
-    const romina = new Estudiante(carrerasCursando = programacion)
-    const alicia = new Estudiante(carrerasCursando = programacion)
-    const ana = new Estudiante(carrerasCursando = programacion)
+    const roque = new Estudiante() //cuando intento hacer carrerasCursando = programacion,en esta linea, falla
+    const luisa = new Estudiante()
+    const romina = new Estudiante()
+    const alicia = new Estudiante()
+    const ana = new Estudiante() 
+
+    //test 1
 
     test "Roque puede inscribirse en Objetos 2" {
-      roque.registroMateriaAprobada(mate1, 9)
-      roque.registroMateriaAprobada(objetos1, 9)
-      assert.that(roque.puedeInscribirseA(objetos2))
+        roque.carrerasCursando().add(programacion)
+        programacion.materias().add(objetos2)
+        programacion.materias().add(objetos1)
+        programacion.materias().add(mate1)
+        objetos2.requisitos().add(objetos1)
+        objetos2.requisitos().add(mate1)
+        roque.registroMateriaAprobada(mate1, 9)
+        roque.registroMateriaAprobada(objetos1, 9)
+        assert.that(roque.puedeInscribirseA(objetos2))
     }
 
-    test "Roque no puede inscribirse en Objetos 3" {
+    test "Roque no puede inscribirse en Objetos 3" { 
+        roque.carrerasCursando().add(programacion)
+        programacion.materias().add(objetos2)
+        programacion.materias().add(base)
+        programacion.materias().add(objetos1)
+        programacion.materias().add(mate1)
+        programacion.materias().add(objetos3)
+        objetos2.requisitos().add(objetos1)
+        objetos2.requisitos().add(mate1)
+        objetos3.requisitos().add(objetos2)
+        objetos3.requisitos().add(base)
+        
         roque.registroMateriaAprobada(base, 8)
+        roque.registroMateriaAprobada(objetos1, 8)
         assert.notThat(roque.puedeInscribirseA(objetos3))
     }
 
     test "Roque no puede inscribirse en Objetos 1" {
-        roque.registroMateriaAprobada(mate1, 9)
+        roque.carrerasCursando().add(programacion)
+        programacion.materias().add(objetos1)
+        roque.registroMateriaAprobada(objetos1, 9)
+
         assert.notThat(roque.puedeInscribirseA(objetos1))
     }
 
     //test 2
 
     test "Roque puede inscribirse en programacionConcurrente" {
-      assert.that(roque.puedeInscribirseA(programacionConcurrente))
+        roque.carrerasCursando().add(programacion)
+        programacion.materias().add(objetos1)
+        programacion.materias().add(base)
+        programacion.materias().add(programacionConcurrente)
+
+        programacionConcurrente.requisitos().add(objetos1)
+        programacionConcurrente.requisitos().add(base)
+
+        roque.registroMateriaAprobada(base, 8)
+        roque.registroMateriaAprobada(objetos1, 9)
+
+        assert.that(roque.puedeInscribirseA(programacionConcurrente))
     }
 
     test "Roque puede inscribirse en Biologia 2" {
-      assert.that(roque.puedeInscribirseA(biologia2))
+        roque.carrerasCursando().add(medicina)
+        medicina.materias().add(biologia1)
+        medicina.materias().add(biologia2)
+
+        biologia2.requisitos().add(biologia1)
+        
+        roque.registroMateriaAprobada(biologia1, 4)
+        assert.that(roque.puedeInscribirseA(biologia2))
     }
 
     //test 3
+
+    test "Quedan confirmadas 3 estudiantes" {
+        luisa.carrerasCursando().add(programacion)
+        romina.carrerasCursando().add(programacion)
+        alicia.carrerasCursando().add(programacion)
+        programacion.materias().add(objetos2)
+        programacion.materias().add(objetos1)
+        programacion.materias().add(mate1)
+        objetos2.requisitos().add(objetos1)
+        objetos2.requisitos().add(mate1)
+
+        luisa.registroMateriaAprobada(mate1, 9)
+        luisa.registroMateriaAprobada(objetos1, 9)
+
+        romina.registroMateriaAprobada(mate1, 9)
+        romina.registroMateriaAprobada(objetos1, 9)
+
+        alicia.registroMateriaAprobada(mate1, 9)
+        alicia.registroMateriaAprobada(objetos1, 9)
+
+        objetos2.inscribirEstudiante(luisa)
+        objetos2.inscribirEstudiante(romina)
+        objetos2.inscribirEstudiante(alicia)
+
+        assert.that(objetos2.estudiantesAnotados() == #{luisa,romina,alicia})
+
+        /* assert.that(luisa.materiasInscriptas().contains(objetos2))
+        assert.that(romina.materiasInscriptas().contains(objetos2))
+        assert.that(alicia.materiasInscriptas().contains(objetos2)) //esta ok poner los 3 asserts seguidos? */
+
+    }
+
+    test "Quedan confirmadas 3 estudiantes, pero roque queda en waitlist" {
+        luisa.carrerasCursando().add(programacion)
+        romina.carrerasCursando().add(programacion)
+        alicia.carrerasCursando().add(programacion)
+        roque.carrerasCursando().add(programacion)
+        programacion.materias().add(objetos2)
+        programacion.materias().add(objetos1)
+        programacion.materias().add(mate1)
+        objetos2.requisitos().add(objetos1)
+        objetos2.requisitos().add(mate1)
+
+        luisa.registroMateriaAprobada(mate1, 9)
+        luisa.registroMateriaAprobada(objetos1, 9)
+
+        romina.registroMateriaAprobada(mate1, 9)
+        romina.registroMateriaAprobada(objetos1, 9)
+
+        alicia.registroMateriaAprobada(mate1, 9)
+        alicia.registroMateriaAprobada(objetos1, 9)
+
+        roque.registroMateriaAprobada(mate1, 9)
+        roque.registroMateriaAprobada(objetos1, 9)
+
+        objetos2.inscribirEstudiante(luisa)
+        objetos2.inscribirEstudiante(romina)
+        objetos2.inscribirEstudiante(alicia)
+        objetos2.inscribirEstudiante(roque)
+
+        assert.that(objetos2.estudiantesEnListaDeEspera() == [roque])
+
+    }
+
+
+    test "Se da de baja Romina, Roque se inscribe" {
+        luisa.carrerasCursando().add(programacion)
+        romina.carrerasCursando().add(programacion)
+        alicia.carrerasCursando().add(programacion)
+        roque.carrerasCursando().add(programacion)
+        programacion.materias().add(objetos2)
+        programacion.materias().add(objetos1)
+        programacion.materias().add(mate1)
+        objetos2.requisitos().add(objetos1)
+        objetos2.requisitos().add(mate1)
+
+        luisa.registroMateriaAprobada(mate1, 9)
+        luisa.registroMateriaAprobada(objetos1, 9)
+
+        romina.registroMateriaAprobada(mate1, 9)
+        romina.registroMateriaAprobada(objetos1, 9)
+
+        alicia.registroMateriaAprobada(mate1, 9)
+        alicia.registroMateriaAprobada(objetos1, 9)
+
+        roque.registroMateriaAprobada(mate1, 9)
+        roque.registroMateriaAprobada(objetos1, 9)
+
+        objetos2.inscribirEstudiante(luisa)
+        objetos2.inscribirEstudiante(romina)
+        objetos2.inscribirEstudiante(alicia)
+        objetos2.inscribirEstudiante(roque)
+        objetos2.darDeBaja(romina)
+
+        assert.that(objetos2.estudiantesAnotados() == #{luisa,alicia,roque})
+
+    }
+
+
+
 
 
 

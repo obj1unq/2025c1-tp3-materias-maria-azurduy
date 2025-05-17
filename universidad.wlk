@@ -5,13 +5,13 @@ class Aprobacion {
 
 
 class Carrera {
-    var property materias = {}
+    var property materias = #{}
 }
 
 class Materia {
-    var property estudiantesAnotados = {} 
+    var property estudiantesAnotados = #{} 
     var property estudiantesEnListaDeEspera = []
-    var property requisitos = {}
+    var property requisitos = #{}
     var property cupo 
 
    method inscribirEstudiante(estudiante) {
@@ -20,8 +20,8 @@ class Materia {
     }
     
     method validarInscribir(estudiante) {
-        if (not estudiante.puedeInscribirseA(self)) 
-        {self.error("No cumple condiciones para anotarse.")}
+        if (not estudiante.puedeInscribirseA(self)) {
+            self.error("No cumple condiciones para anotarse.")}
     } 
 
     method estudianteListaDeEsperaOAnotado(estudiante){ //5
@@ -57,10 +57,10 @@ class Materia {
 
 
 class Estudiante {
-    var property materiasAprobadas = {}                                                      
-    var property carrerasCursando = {} 
-    var property materiasInscriptas= {}
-    var property materiasEnEspera= {}
+    var property materiasAprobadas = #{}                                                      
+    var property carrerasCursando = #{} 
+    var property materiasInscriptas= #{}
+    var property materiasEnEspera= #{}
 
     method registroMateriaAprobada(materia, nota){
         self.validarAprobacion(materia) //punto 3
@@ -82,7 +82,7 @@ class Estudiante {
     }
 
     method tieneAprobada (materia){                        
-        return materiasAprobadas.contains(materia)
+        return materiasAprobadas.any({aprobacion => aprobacion.materia() == materia})
     }
 
     method materiasDeTodasLasCarreras() {
@@ -122,7 +122,3 @@ class Estudiante {
     }
 
     }
-
-
-
-
