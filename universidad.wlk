@@ -3,16 +3,33 @@ class Aprobacion {
     const property nota 
 }
 
-
+/* 
 class Carrera {
     var property materias = #{}
 }
 
+class TipoDeRequisito{
+    var property requisito 
+
+} */
+
 class Materia {
     var property estudiantesAnotados = #{} 
     var property estudiantesEnListaDeEspera = []
-    var property requisitos = #{}
+    //var property tipoDeRequisitoQueTiene  = creditos
     var property cupo 
+    //const property creditos 
+    //const property añoQuePertenece 
+
+    /* method tipoDeRequisitoQueTiene (){
+
+    } */
+
+
+
+    /* method esSinRequisito(){
+        return requisitos.isEmpty()
+    } */
 
    method inscribirEstudiante(estudiante) {
         self.validarInscribir(estudiante)
@@ -68,10 +85,21 @@ class Estudiante {
     }
 
     method validarAprobacion(materia) {
-        if (self.tieneAprobada (materia)) { 
+        if (self.tieneAprobada (materia)) { // self.debeAprobar(materia) -- xq puede ser que esa materia este en otra carrera etc 
             self.error("Ya la aprobaste")
         }
     }
+
+    /* 
+    method debeAprobar(materia) {
+            return not.selftieneAprobada(materia) && self.esDeSuCarrera(materia)    
+            }
+
+    method esDeSuCarrera(materia) {
+            return
+            }
+    
+     */
 
     method cantidadDeMateriasAprobadas () { 
         return materiasAprobadas.size()
@@ -82,8 +110,12 @@ class Estudiante {
     }
 
     method tieneAprobada (materia){                        
-        return materiasAprobadas.any({aprobacion => aprobacion.materia() == materia})
+        return materiasAprobadas.any({aprobacion => aprobacion.materia() == materia}) // aprobacion => aprobacion.esDe(materia) 
     }
+
+    /* method esDe(_materia) {
+            materia == _materia
+    } */
 
     method materiasDeTodasLasCarreras() {
         return carrerasCursando.map({carrera => carrera.materias()}).flatten() //uno listas en una sola lista. 

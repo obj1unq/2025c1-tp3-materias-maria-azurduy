@@ -10,7 +10,7 @@ describe "tests del tp" {
     const objetos2 = new Materia(cupo=3) 
     const base = new Materia(cupo=8)
     const objetos3 = new Materia(cupo=6)
-    const programacionConcurrente = new Materia(cupo=5)
+    const programacionConcurrente = new Materia(cupo=5, requisitos = #{objetos1, mate1})
     const epi = new Materia(cupo=55)
     
     const biologia1 = new Materia(cupo=55)
