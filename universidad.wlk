@@ -3,20 +3,31 @@ class Aprobacion {
     const property nota 
 }
 
-/* 
 class Carrera {
     var property materias = #{}
 }
 
-class TipoDeRequisito{
-    var property requisito 
+class Credito {
 
-} */
+}
+
+class Correlativa {
+
+    var property correlativas
+
+    method validarInscripcion(alumno) 
+
+}
+
+class Año {
+
+
+}
 
 class Materia {
     var property estudiantesAnotados = #{} 
     var property estudiantesEnListaDeEspera = []
-    //var property tipoDeRequisitoQueTiene  = creditos
+    var property tipoDeRequisitoQueTiene  
     var property cupo 
     //const property creditos 
     //const property añoQuePertenece 
@@ -24,7 +35,6 @@ class Materia {
     /* method tipoDeRequisitoQueTiene (){
 
     } */
-
 
 
     /* method esSinRequisito(){
